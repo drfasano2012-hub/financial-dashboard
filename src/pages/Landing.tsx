@@ -35,7 +35,10 @@ export default function Landing() {
               Understand your money <br />
               <span className="bg-gradient-accent bg-clip-text text-transparent">in minutes</span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed font-medium">
+              You take your job seriously. Your life deserves at least as much.
+            </p>
+            <p className="mt-4 text-base md:text-lg text-primary-foreground/60 max-w-2xl mx-auto leading-relaxed">
               Answer a few questions. Get a clear dashboard, science-backed benchmarks, and the exact 3 next moves to make. All in under 5 minutes.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
