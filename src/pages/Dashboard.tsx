@@ -28,12 +28,14 @@ import { cn } from "@/lib/utils";
 export default function Dashboard() {
   const inputs = useFinancialStore((s) => s.inputs);
   const reset = useFinancialStore((s) => s.reset);
+  const navigate = useNavigate();
 
   const result = useMemo(() => {
     if (!inputs) return null;
     const metrics = calculateMetrics(inputs);
     return {
       metrics,
+      healthScore: calculateHealthScore(metrics),
       benchmarks: {
         savings: savingsRateBenchmark(metrics.savingsRate),
         emergency: emergencyFundBenchmark(metrics.emergencyFundMonths),
@@ -48,8 +50,13 @@ export default function Dashboard() {
 
   if (!inputs || !result) return <Navigate to="/checkup" replace />;
 
-  const { metrics, benchmarks, recommendations } = result;
+  const { metrics, benchmarks, recommendations, healthScore } = result;
   const spendingPct = inputs.monthlyTakeHome > 0 ? (inputs.monthlySpending / inputs.monthlyTakeHome) * 100 : 0;
+
+  const handleReset = () => {
+    reset();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -64,12 +71,33 @@ export default function Dashboard() {
           </div>
           <div className="flex gap-2">
             <Button variant="outline" asChild>
-              <Link to="/checkup"><RotateCcw className="h-4 w-4" /> Update inputs</Link>
+              <Link to="/checkup"><Pencil className="h-4 w-4" /> Edit answers</Link>
             </Button>
-            <Button variant="ghost" onClick={() => { reset(); }} asChild>
-              <Link to="/">Start over</Link>
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost">
+                  <RotateCcw className="h-4 w-4" /> Start over
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Clear all your data?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will erase your saved inputs and return you to the start. This can't be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleReset}>Yes, start over</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
+        </div>
+
+        {/* Overall health score */}
+        <div className="mb-10 animate-fade-in">
+          <HealthScoreCard score={healthScore} />
         </div>
 
         {/* A. Snapshot — 4 cards */}
@@ -80,6 +108,18 @@ export default function Dashboard() {
           <MetricCard icon={Shield} label="Emergency fund" benchmark={benchmarks.emergency} />
           <MetricCard icon={TrendingUp} label="Net worth" benchmark={benchmarks.netWorth} />
         </div>
+
+        {/* What-if simulator */}
+        <SectionTitle eyebrow="Scenario planning" title='Try a "what if"' />
+        <div className="mb-12">
+          <WhatIfSimulator
+            monthlySpending={inputs.monthlySpending}
+            cashSavings={inputs.cashSavings}
+            currentSurplus={metrics.monthlySurplus}
+            metrics={metrics}
+          />
+        </div>
+
 
         {/* B + C grid */}
         <div className="grid lg:grid-cols-2 gap-4 mb-12">
