@@ -29,7 +29,7 @@ export function generateRecommendations(
   if (metrics.totalDebt === 0) goingWell.push(`Completely debt-free — full flexibility to build wealth.`);
   if (metrics.monthlySurplus > 0) goingWell.push(`Positive monthly cash flow of ${formatCurrency(metrics.monthlySurplus)}.`);
   if (metrics.netWorth > 0) goingWell.push(`Positive net worth of ${formatCurrency(metrics.netWorth)} — assets outweigh liabilities.`);
-  if (metrics.investments > 0) goingWell.push(`You're invested — time in market is your biggest ally.`);
+  if (input.investments > 0) goingWell.push(`You're invested — time in market is your biggest ally.`);
 
   // ----- What needs attention -----
   if (metrics.monthlySurplus < 0) needsAttention.push(`Monthly deficit of ${formatCurrency(Math.abs(metrics.monthlySurplus))} — spending exceeds income.`);
@@ -37,7 +37,7 @@ export function generateRecommendations(
   if (metrics.emergencyFundMonths < 3) needsAttention.push(`Emergency fund only ${metrics.emergencyFundMonths.toFixed(1)} months — vulnerable to income disruption.`);
   if (metrics.highInterestDebt > 0) needsAttention.push(`${formatCurrency(metrics.highInterestDebt)} in high-interest debt is silently eroding wealth.`);
   if (metrics.netWorth < 0) needsAttention.push(`Net worth is negative — liabilities exceed assets.`);
-  if (metrics.investments === 0 && metrics.investingReadiness !== "Low") needsAttention.push(`No investments yet — you're missing compounding growth.`);
+  if (input.investments === 0 && metrics.investingReadiness !== "Low") needsAttention.push(`No investments yet — you're missing compounding growth.`);
 
   // ----- Priority actions (in order) -----
   // 1. Fix deficit
@@ -95,7 +95,7 @@ export function generateRecommendations(
 
   // 6. Start/increase investing
   if (metrics.investingReadiness !== "Low") {
-    if (metrics.investments === 0) {
+    if (input.investments === 0) {
       candidates.push({
         priority: 6,
         impact: "high",
