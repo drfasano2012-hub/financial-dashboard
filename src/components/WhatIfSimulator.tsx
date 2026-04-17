@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react">;
+import { useMemo, useState } from "react";
 import { Sliders, TrendingUp } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { formatCurrency } from "@/lib/calculations";
