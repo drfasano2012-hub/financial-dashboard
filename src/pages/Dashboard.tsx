@@ -1,19 +1,27 @@
 import { useMemo } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   TrendingUp, Wallet, Shield, CreditCard, PiggyBank, LineChart,
-  ArrowUpRight, ArrowDownRight, RotateCcw, CheckCircle2, AlertCircle, Target,
+  ArrowUpRight, ArrowDownRight, RotateCcw, CheckCircle2, AlertCircle, Target, Pencil,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { BenchmarkBadge } from "@/components/BenchmarkBadge";
+import { HealthScoreCard } from "@/components/HealthScoreCard";
+import { WhatIfSimulator } from "@/components/WhatIfSimulator";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useFinancialStore } from "@/store/financialStore";
 import { calculateMetrics, formatCurrency, formatPercent } from "@/lib/calculations";
 import {
   savingsRateBenchmark, emergencyFundBenchmark, debtBenchmark,
   netWorthBenchmark, surplusBenchmark, investingReadinessBenchmark,
 } from "@/lib/benchmarks";
+import { calculateHealthScore } from "@/lib/healthScore";
 import { generateRecommendations } from "@/lib/recommendations";
 import { cn } from "@/lib/utils";
 
