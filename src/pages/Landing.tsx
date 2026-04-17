@@ -33,7 +33,7 @@ export default function Landing() {
             </div>
             <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
               Understand your money <br />
-              <span className="bg-gradient-to-r from-accent to-emerald-300 bg-clip-text text-transparent">in minutes</span>
+              <span className="bg-gradient-accent bg-clip-text text-transparent">in minutes</span>
             </h1>
             <p className="mt-6 text-lg md:text-xl text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
               Answer a few questions. Get a clear dashboard, science-backed benchmarks, and the exact 3 next moves to make. All in under 5 minutes.
