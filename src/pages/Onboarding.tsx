@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppHeader } from "@/components/AppHeader";
 import { ProgressBar } from "@/components/ProgressBar";
+import { CurrencyInput } from "@/components/CurrencyInput";
 import { useFinancialStore } from "@/store/financialStore";
 import { DebtItem, FinancialInputs, Goal, RiskTolerance } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -131,18 +132,7 @@ function NumberField({ label, value, onChange, prefix = "$", helper }: { label: 
   return (
     <div className="space-y-2">
       <Label className="text-sm font-medium">{label}</Label>
-      <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">{prefix}</span>
-        <Input
-          type="number"
-          inputMode="decimal"
-          min={0}
-          value={value === 0 ? "" : value}
-          onChange={(e) => onChange(Number(e.target.value) || 0)}
-          className="h-12 pl-8 text-base"
-          placeholder="0"
-        />
-      </div>
+      <CurrencyInput value={value} onChange={onChange} prefix={prefix} />
       {helper && <p className="text-xs text-muted-foreground">{helper}</p>}
     </div>
   );
