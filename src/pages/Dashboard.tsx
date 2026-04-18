@@ -8,7 +8,6 @@ import { AppHeader } from "@/components/AppHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { BenchmarkBadge } from "@/components/BenchmarkBadge";
 import { HealthScoreCard } from "@/components/HealthScoreCard";
-import { WhatIfSimulator } from "@/components/WhatIfSimulator";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -109,17 +108,18 @@ export default function Dashboard() {
           <MetricCard icon={TrendingUp} label="Net worth" benchmark={benchmarks.netWorth} />
         </div>
 
-        {/* What-if simulator */}
-        <SectionTitle eyebrow="Scenario planning" title='Try a "what if"' />
-        <div className="mb-12">
-          <WhatIfSimulator
-            monthlySpending={inputs.monthlySpending}
-            cashSavings={inputs.cashSavings}
-            currentSurplus={metrics.monthlySurplus}
-            metrics={metrics}
-          />
+        {/* Pointer to Tools */}
+        <div className="mb-12 rounded-xl border border-accent/20 bg-accent-soft/40 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-foreground">Want to model different scenarios?</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Use the calculators in Tools to project savings, compound growth, and your Coast FIRE number.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/tools">Open Tools →</Link>
+          </Button>
         </div>
-
 
         {/* B + C grid */}
         <div className="grid lg:grid-cols-2 gap-4 mb-12">
