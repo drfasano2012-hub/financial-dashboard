@@ -64,7 +64,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 animate-fade-in">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">Your Financial Health</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">Your wealthOS</p>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Dashboard</h1>
             <p className="mt-2 text-muted-foreground">A clear view of where you are — and what to do next.</p>
           </div>

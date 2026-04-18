@@ -19,7 +19,7 @@ export function AppHeader() {
             <TrendingUp className="h-4 w-4" />
           </div>
           <span className="text-base tracking-tight whitespace-nowrap">
-            Financial Health <span className="text-accent">OS</span>
+            wealth<span className="text-accent">OS</span>
           </span>
         </Link>
         <nav className="flex items-center gap-0.5 text-sm overflow-x-auto -mx-2 px-2">
