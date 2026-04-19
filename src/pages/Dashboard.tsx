@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   TrendingUp, Wallet, Shield, CreditCard, PiggyBank, LineChart,
   ArrowUpRight, ArrowDownRight, RotateCcw, CheckCircle2, AlertCircle, Target, Pencil,
+  Flame, Coffee, Sliders, ArrowRight,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MetricCard } from "@/components/MetricCard";
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useFinancialStore } from "@/store/financialStore";
 import { calculateMetrics, formatCurrency, formatPercent } from "@/lib/calculations";
+import type { Metrics } from "@/lib/types";
 import {
   savingsRateBenchmark, emergencyFundBenchmark, debtBenchmark,
   netWorthBenchmark, surplusBenchmark, investingReadinessBenchmark,
@@ -108,18 +110,8 @@ export default function Dashboard() {
           <MetricCard icon={TrendingUp} label="Net worth" benchmark={benchmarks.netWorth} />
         </div>
 
-        {/* Pointer to Tools */}
-        <div className="mb-12 rounded-xl border border-accent/20 bg-accent-soft/40 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-foreground">Want to model different scenarios?</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Use the calculators in Tools to project savings, compound growth, and your Coast FIRE number.
-            </p>
-          </div>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/tools">Open Tools →</Link>
-          </Button>
-        </div>
+        {/* Personalized next-step pointer to Tools */}
+        <NextStepCard metrics={metrics} />
 
         {/* B + C grid */}
         <div className="grid lg:grid-cols-2 gap-4 mb-12">
@@ -227,10 +219,15 @@ export default function Dashboard() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground">Currently invested</p>
-                  <p className="text-2xl font-bold text-foreground">{formatCurrency(inputs.investments)}</p>
+                  <p className="text-xs text-muted-foreground">Total invested</p>
+                  <p className="text-2xl font-bold text-foreground">{formatCurrency(metrics.totalInvestments)}</p>
                 </div>
                 <BenchmarkBadge benchmark={benchmarks.investing} />
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <BucketChip label="Retirement" value={inputs.retirementAccounts ?? 0} />
+                <BucketChip label="Brokerage" value={inputs.brokerageAccounts ?? 0} />
+                <BucketChip label="HSA" value={inputs.hsaAccounts ?? 0} />
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <ReadinessChip active={metrics.emergencyFundMonths >= 3} label="Emergency fund" />
@@ -317,6 +314,12 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Personalized next-step tools handoff */}
+        <div className="mt-12">
+          <SectionTitle eyebrow="Next steps · Tools" title="Take it further" />
+          <ToolsHandoff metrics={metrics} />
+        </div>
+
         <p className="text-center text-xs text-muted-foreground mt-12">
           Educational tool, not financial advice. Re-run your checkup monthly to track progress.
         </p>
@@ -374,5 +377,133 @@ function ReadinessChip({ active, label }: { active: boolean; label: string }) {
       <CheckCircle2 className={cn("h-3.5 w-3.5 mx-auto mb-1", active ? "text-success" : "text-muted-foreground/40")} />
       <p className="text-[10px] font-medium leading-tight">{label}</p>
     </div>
+  );
+}
+
+function BucketChip({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-md border border-border bg-secondary/60 px-2 py-2">
+      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground leading-tight">{label}</p>
+      <p className="text-sm font-bold text-foreground tabular-nums mt-0.5">{formatCurrency(value)}</p>
+    </div>
+  );
+}
+
+interface ToolRec {
+  to: string;
+  icon: React.ElementType;
+  eyebrow: string;
+  title: string;
+  detail: string;
+  primary: boolean;
+}
+
+function pickToolRecs(metrics: Metrics): ToolRec[] {
+  const coast: ToolRec = {
+    to: "/tools?tab=coast-fire",
+    icon: Flame,
+    eyebrow: "Recommended next step",
+    title: "Find your Coast FIRE number",
+    detail:
+      "Your foundation is solid — see how much you need invested today so your money compounds to fund retirement on its own.",
+    primary: true,
+  };
+  const compound: ToolRec = {
+    to: "/tools?tab=compound",
+    icon: LineChart,
+    eyebrow: "Recommended next step",
+    title: "Project your compound growth",
+    detail:
+      "See what consistent monthly investing turns into over 10, 20, and 30 years. Time + compounding does the heavy lifting.",
+    primary: true,
+  };
+  const savings: ToolRec = {
+    to: "/tools?tab=savings",
+    icon: Sliders,
+    eyebrow: "Recommended next step",
+    title: "Speed up your emergency fund",
+    detail:
+      "Model how a small monthly bump shortens the path to a 3-month buffer.",
+    primary: true,
+  };
+
+  // Personalize the headline tool
+  let headline: ToolRec;
+  if (metrics.investingReadiness === "Strong") headline = coast;
+  else if (metrics.emergencyFundMonths < 3 || metrics.monthlySurplus <= 0) headline = savings;
+  else headline = compound;
+
+  // The other two as secondary
+  const all = [coast, compound, savings];
+  const others = all
+    .filter((t) => t.to !== headline.to)
+    .map((t) => ({ ...t, primary: false, eyebrow: "Also try" }));
+
+  return [headline, ...others];
+}
+
+function ToolsHandoff({ metrics }: { metrics: Metrics }) {
+  const recs = pickToolRecs(metrics);
+  return (
+    <div className="grid lg:grid-cols-3 gap-4">
+      {recs.map((r) => (
+        <Link
+          key={r.to}
+          to={r.to}
+          className={cn(
+            "group rounded-xl border p-6 transition-smooth hover:shadow-md-soft hover:-translate-y-0.5",
+            r.primary
+              ? "bg-accent-soft border-accent/30"
+              : "bg-card border-border hover:border-accent/40",
+          )}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className={cn(
+              "rounded-md p-1.5",
+              r.primary ? "bg-accent text-accent-foreground" : "bg-secondary text-primary",
+            )}>
+              <r.icon className="h-3.5 w-3.5" />
+            </div>
+            <p className={cn(
+              "text-[10px] font-semibold uppercase tracking-wider",
+              r.primary ? "text-accent" : "text-muted-foreground",
+            )}>
+              {r.eyebrow}
+            </p>
+          </div>
+          <h3 className="font-semibold text-foreground mb-2">{r.title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">{r.detail}</p>
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-accent">
+            Open tool <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function NextStepCard({ metrics }: { metrics: Metrics }) {
+  const headline = pickToolRecs(metrics)[0];
+  return (
+    <Link
+      to={headline.to}
+      className="group mb-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-accent/30 bg-accent-soft/60 p-5 transition-smooth hover:bg-accent-soft hover:shadow-sm-soft"
+    >
+      <div className="flex items-start gap-3 min-w-0">
+        <div className="rounded-md bg-accent text-accent-foreground p-2 shrink-0">
+          <headline.icon className="h-4 w-4" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-accent mb-1">
+            {headline.eyebrow}
+          </p>
+          <p className="text-sm font-semibold text-foreground">{headline.title}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{headline.detail}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1.5 text-sm font-semibold text-accent shrink-0">
+        Open tool <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      </div>
+    </Link>
   );
 }

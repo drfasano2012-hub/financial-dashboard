@@ -9,31 +9,32 @@ export interface HealthScore {
 }
 
 /**
- * Composite financial health score (0-100), weighted across 5 pillars:
- * - Savings rate (25)
- * - Emergency fund (25)
- * - Debt health (20)
- * - Net worth posture (15)
- * - Investing readiness (15)
+ * Composite financial health score (0-100), weighted across 5 pillars.
+ * Take-home pay drives the savings-rate pillar, which is now the heaviest.
+ * - Savings rate (% of take-home saved)  35
+ * - Emergency fund                       25
+ * - Debt health                          15
+ * - Net worth posture                    10
+ * - Investing readiness                  15
  */
 export function calculateHealthScore(m: Metrics): HealthScore {
-  // Savings rate: 25 pts max at 25%+
-  const savings = Math.max(0, Math.min(25, (m.savingsRate / 25) * 25));
+  // Savings rate: 35 pts max at 25%+ of take-home
+  const savings = Math.max(0, Math.min(35, (m.savingsRate / 25) * 35));
 
   // Emergency fund: 25 pts max at 6 months
   const emergency = Math.max(0, Math.min(25, (m.emergencyFundMonths / 6) * 25));
 
-  // Debt: 20 pts. Full pts if no debt or weighted rate < 5%, scales down.
-  let debt = 20;
+  // Debt: 15 pts. Full pts if no debt or weighted rate < 5%, scales down.
+  let debt = 15;
   if (m.totalDebt > 0) {
-    if (m.weightedDebtRate > 10) debt = 5;
-    else if (m.weightedDebtRate >= 6) debt = 12;
-    else debt = 18;
-    if (m.highInterestDebt > 0) debt = Math.min(debt, 8);
+    if (m.weightedDebtRate > 10) debt = 4;
+    else if (m.weightedDebtRate >= 6) debt = 9;
+    else debt = 13;
+    if (m.highInterestDebt > 0) debt = Math.min(debt, 6);
   }
 
-  // Net worth: 15 pts. Negative = 0, 0-10k = 7, >10k = 15.
-  const networth = m.netWorth < 0 ? 0 : m.netWorth < 10000 ? 7 : 15;
+  // Net worth: 10 pts. Negative = 0, 0-10k = 5, >10k = 10.
+  const networth = m.netWorth < 0 ? 0 : m.netWorth < 10000 ? 5 : 10;
 
   // Investing readiness: 15 pts.
   const investing =
@@ -63,10 +64,10 @@ export function calculateHealthScore(m: Metrics): HealthScore {
     label,
     tone,
     breakdown: [
-      { label: "Savings rate", value: Math.round(savings), max: 25 },
+      { label: "Savings rate (of take-home)", value: Math.round(savings), max: 35 },
       { label: "Emergency fund", value: Math.round(emergency), max: 25 },
-      { label: "Debt health", value: Math.round(debt), max: 20 },
-      { label: "Net worth", value: Math.round(networth), max: 15 },
+      { label: "Debt health", value: Math.round(debt), max: 15 },
+      { label: "Net worth", value: Math.round(networth), max: 10 },
       { label: "Investing readiness", value: Math.round(investing), max: 15 },
     ],
   };

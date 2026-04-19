@@ -1,13 +1,26 @@
 import { FinancialInputs, Metrics } from "./types";
 
 export function calculateMetrics(input: FinancialInputs): Metrics {
-  const { monthlyTakeHome, monthlySpending, cashSavings, investments, debts } = input;
+  const {
+    monthlyTakeHome,
+    monthlySpending,
+    cashSavings,
+    retirementAccounts = 0,
+    brokerageAccounts = 0,
+    hsaAccounts = 0,
+    investments = 0,
+    debts,
+  } = input;
+
+  // Back-compat: if buckets are empty but legacy `investments` exists, use it.
+  const bucketSum = retirementAccounts + brokerageAccounts + hsaAccounts;
+  const totalInvestments = bucketSum > 0 ? bucketSum : investments;
 
   const monthlySurplus = monthlyTakeHome - monthlySpending;
   const savingsRate = monthlyTakeHome > 0 ? (monthlySurplus / monthlyTakeHome) * 100 : 0;
   const emergencyFundMonths = monthlySpending > 0 ? cashSavings / monthlySpending : 0;
   const totalDebt = debts.reduce((sum, d) => sum + (d.balance || 0), 0);
-  const netWorth = cashSavings + investments - totalDebt;
+  const netWorth = cashSavings + totalInvestments - totalDebt;
 
   const weightedDebtRate =
     totalDebt > 0
@@ -23,7 +36,7 @@ export function calculateMetrics(input: FinancialInputs): Metrics {
   if (emergencyFundMonths >= 3) readinessScore++;
   if (highInterestDebt === 0) readinessScore++;
   if (monthlySurplus > 0) readinessScore++;
-  if (investments > 0) readinessScore++;
+  if (totalInvestments > 0) readinessScore++;
 
   const investingReadiness: Metrics["investingReadiness"] =
     readinessScore >= 3 ? "Strong" : readinessScore >= 2 ? "Moderate" : "Low";
@@ -33,6 +46,7 @@ export function calculateMetrics(input: FinancialInputs): Metrics {
     monthlySurplus,
     emergencyFundMonths,
     netWorth,
+    totalInvestments,
     totalDebt,
     weightedDebtRate,
     highInterestDebt,

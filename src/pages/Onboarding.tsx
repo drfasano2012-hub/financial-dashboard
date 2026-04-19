@@ -20,7 +20,10 @@ const SAMPLE: FinancialInputs = {
   monthlyTakeHome: 4800,
   monthlySpending: 3900,
   cashSavings: 6000,
-  investments: 12000,
+  investments: 0,
+  retirementAccounts: 9000,
+  brokerageAccounts: 2500,
+  hsaAccounts: 500,
   debts: [
     { id: uid(), name: "Credit Card", balance: 4200, rate: 22 },
     { id: uid(), name: "Student Loan", balance: 18000, rate: 5.5 },
@@ -42,6 +45,9 @@ export default function Onboarding() {
       monthlySpending: 0,
       cashSavings: 0,
       investments: 0,
+      retirementAccounts: 0,
+      brokerageAccounts: 0,
+      hsaAccounts: 0,
       debts: [],
       goals: [],
       riskTolerance: "moderate",
@@ -69,7 +75,7 @@ export default function Onboarding() {
   };
 
   const canProceed = () => {
-    if (step === 1) return data.annualIncome > 0 && data.monthlyTakeHome > 0;
+    if (step === 1) return data.monthlyTakeHome > 0;
     if (step === 2) return data.monthlySpending > 0;
     return true;
   };
@@ -141,10 +147,24 @@ function NumberField({ label, value, onChange, prefix = "$", helper }: { label: 
 function StepIncome({ data, update }: StepProps) {
   return (
     <div>
-      <StepHeading eyebrow="Step 1 · Income" title="What do you earn?" subtitle="Your top-line numbers — pre-tax annual and post-tax monthly." />
+      <StepHeading
+        eyebrow="Step 1 · Income"
+        title="What lands in your account?"
+        subtitle="Lead with take-home — that's the money that actually drives your savings rate. Annual gross is optional context."
+      />
       <div className="grid sm:grid-cols-2 gap-5">
-        <NumberField label="Annual income (gross)" value={data.annualIncome} onChange={(v) => update("annualIncome", v)} helper="Before taxes" />
-        <NumberField label="Monthly take-home pay" value={data.monthlyTakeHome} onChange={(v) => update("monthlyTakeHome", v)} helper="After tax & 401k" />
+        <NumberField
+          label="Monthly take-home pay"
+          value={data.monthlyTakeHome}
+          onChange={(v) => update("monthlyTakeHome", v)}
+          helper="After tax, 401k, insurance — what hits the bank"
+        />
+        <NumberField
+          label="Annual income (gross)"
+          value={data.annualIncome}
+          onChange={(v) => update("annualIncome", v)}
+          helper="Optional — pre-tax, for context"
+        />
       </div>
     </div>
   );
@@ -153,11 +173,40 @@ function StepIncome({ data, update }: StepProps) {
 function StepSpendingSavings({ data, update }: StepProps) {
   return (
     <div>
-      <StepHeading eyebrow="Step 2 · Spending & savings" title="Where does it go and what's left?" subtitle="Approximate is fine — we'll show you the full picture." />
+      <StepHeading
+        eyebrow="Step 2 · Spending, cash & investments"
+        title="Where does it go and what's invested?"
+        subtitle="Approximate is fine. Splitting investment buckets helps us tailor recommendations."
+      />
       <div className="grid sm:grid-cols-2 gap-5">
         <NumberField label="Monthly spending" value={data.monthlySpending} onChange={(v) => update("monthlySpending", v)} helper="All-in: rent, food, etc." />
         <NumberField label="Cash & savings" value={data.cashSavings} onChange={(v) => update("cashSavings", v)} helper="Checking + HYSA" />
-        <NumberField label="Investments" value={data.investments} onChange={(v) => update("investments", v)} helper="401k, IRA, brokerage" />
+      </div>
+
+      <div className="mt-6">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+          Investment accounts
+        </p>
+        <div className="grid sm:grid-cols-3 gap-5">
+          <NumberField
+            label="Retirement"
+            value={data.retirementAccounts}
+            onChange={(v) => update("retirementAccounts", v)}
+            helper="401k, IRA, Roth"
+          />
+          <NumberField
+            label="Brokerage"
+            value={data.brokerageAccounts}
+            onChange={(v) => update("brokerageAccounts", v)}
+            helper="Taxable accounts"
+          />
+          <NumberField
+            label="HSA"
+            value={data.hsaAccounts}
+            onChange={(v) => update("hsaAccounts", v)}
+            helper="Health Savings Account"
+          />
+        </div>
       </div>
     </div>
   );
