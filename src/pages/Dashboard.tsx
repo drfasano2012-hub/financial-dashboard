@@ -227,10 +227,15 @@ export default function Dashboard() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground">Currently invested</p>
-                  <p className="text-2xl font-bold text-foreground">{formatCurrency(inputs.investments)}</p>
+                  <p className="text-xs text-muted-foreground">Total invested</p>
+                  <p className="text-2xl font-bold text-foreground">{formatCurrency(metrics.totalInvestments)}</p>
                 </div>
                 <BenchmarkBadge benchmark={benchmarks.investing} />
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <BucketChip label="Retirement" value={inputs.retirementAccounts ?? 0} />
+                <BucketChip label="Brokerage" value={inputs.brokerageAccounts ?? 0} />
+                <BucketChip label="HSA" value={inputs.hsaAccounts ?? 0} />
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <ReadinessChip active={metrics.emergencyFundMonths >= 3} label="Emergency fund" />

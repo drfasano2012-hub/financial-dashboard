@@ -75,7 +75,7 @@ export default function Onboarding() {
   };
 
   const canProceed = () => {
-    if (step === 1) return data.annualIncome > 0 && data.monthlyTakeHome > 0;
+    if (step === 1) return data.monthlyTakeHome > 0;
     if (step === 2) return data.monthlySpending > 0;
     return true;
   };
