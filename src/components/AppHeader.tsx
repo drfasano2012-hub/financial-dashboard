@@ -1,7 +1,15 @@
-import { TrendingUp } from "lucide-react";
+import { Menu, TrendingUp } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "@/components/UserMenu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const NAV = [
   { to: "/checkup", label: "Checkup" },
@@ -12,6 +20,10 @@ const NAV = [
 
 export function AppHeader() {
   const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+
+  const isActive = (to: string) => pathname === to || pathname.startsWith(to + "/");
+
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-40">
       <div className="container flex h-16 items-center justify-between gap-4">
@@ -23,27 +35,66 @@ export function AppHeader() {
             wealth<span className="text-accent">OS</span>
           </span>
         </Link>
-        <div className="flex items-center gap-3 min-w-0">
-          <nav className="flex items-center gap-0.5 text-sm overflow-x-auto -mx-2 px-2">
-            {NAV.map((item) => {
-              const active = pathname === item.to || pathname.startsWith(item.to + "/");
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "px-3 py-2 rounded-md transition-smooth whitespace-nowrap",
-                    active
-                      ? "text-foreground bg-secondary font-medium"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-3 min-w-0">
+          <nav className="flex items-center gap-0.5 text-sm">
+            {NAV.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "px-3 py-2 rounded-md transition-smooth whitespace-nowrap",
+                  isActive(item.to)
+                    ? "text-foreground bg-secondary font-medium"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
           <UserMenu />
+        </div>
+
+        {/* Mobile nav */}
+        <div className="flex md:hidden items-center gap-2">
+          <UserMenu />
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Open menu"
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-secondary text-foreground hover:border-accent transition-smooth"
+              >
+                <Menu className="h-4 w-4" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72">
+              <SheetHeader>
+                <SheetTitle className="text-left">
+                  wealth<span className="text-accent">OS</span>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-1">
+                {NAV.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "px-3 py-3 rounded-md text-base transition-smooth",
+                      isActive(item.to)
+                        ? "text-foreground bg-secondary font-medium"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

@@ -29,7 +29,7 @@ export default function Landing() {
           <div className="mx-auto max-w-3xl text-center animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/5 px-4 py-1.5 text-xs font-medium backdrop-blur">
               <Sparkles className="h-3.5 w-3.5 text-accent" />
-              <span>Your personal financial checkup — free, no signup</span>
+              <span>Your personal financial checkup</span>
             </div>
             <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
               Understand your money <br />
@@ -50,7 +50,7 @@ export default function Landing() {
               </Button>
               <div className="flex items-center gap-2 text-sm text-primary-foreground/60">
                 <ShieldCheck className="h-4 w-4" />
-                <span>Passwordless sign-in. Your data stays yours.</span>
+                <span>Passwordless sign-up. Your data stays yours.</span>
               </div>
             </div>
           </div>
