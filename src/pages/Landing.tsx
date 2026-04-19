@@ -50,7 +50,7 @@ export default function Landing() {
               </Button>
               <div className="flex items-center gap-2 text-sm text-primary-foreground/60">
                 <ShieldCheck className="h-4 w-4" />
-                <span>No account. No data leaves your device.</span>
+                <span>Passwordless sign-in. Your data stays yours.</span>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function Landing() {
         <div className="mt-20 rounded-2xl bg-gradient-hero p-10 md:p-14 text-center text-primary-foreground shadow-lg-soft">
           <TrendingUp className="h-8 w-8 mx-auto mb-4 text-accent" />
           <h3 className="text-2xl md:text-3xl font-bold tracking-tight">Ready to see where you stand?</h3>
-          <p className="mt-3 text-primary-foreground/70 max-w-md mx-auto">Less than 5 minutes. No signup required.</p>
+          <p className="mt-3 text-primary-foreground/70 max-w-md mx-auto">Less than 5 minutes. Sign in with email or Google.</p>
           <Button asChild size="lg" variant="hero" className="mt-6">
             <Link to="/checkup">
               Start Financial Checkup <ArrowRight className="ml-1 h-4 w-4" />
