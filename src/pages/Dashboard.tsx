@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useFinancialStore } from "@/store/financialStore";
 import { calculateMetrics, formatCurrency, formatPercent } from "@/lib/calculations";
+import type { Metrics } from "@/lib/types";
 import {
   savingsRateBenchmark, emergencyFundBenchmark, debtBenchmark,
   netWorthBenchmark, surplusBenchmark, investingReadinessBenchmark,
