@@ -18,7 +18,11 @@ export interface FinancialInputs {
   monthlyTakeHome: number;
   monthlySpending: number;
   cashSavings: number;
+  /** Total invested across all buckets — derived from retirement + brokerage + hsa. Kept for back-compat. */
   investments: number;
+  retirementAccounts: number; // 401k, IRA, Roth
+  brokerageAccounts: number;  // taxable
+  hsaAccounts: number;        // HSA
   debts: DebtItem[];
   goals: Goal[];
   riskTolerance: RiskTolerance;
@@ -51,10 +55,11 @@ export interface Benchmark {
 }
 
 export interface Metrics {
-  savingsRate: number; // %
+  savingsRate: number; // % of take-home saved each month
   monthlySurplus: number;
   emergencyFundMonths: number;
   netWorth: number;
+  totalInvestments: number;
   totalDebt: number;
   weightedDebtRate: number; // %
   highInterestDebt: number;
