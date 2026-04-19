@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   TrendingUp, Wallet, Shield, CreditCard, PiggyBank, LineChart,
   ArrowUpRight, ArrowDownRight, RotateCcw, CheckCircle2, AlertCircle, Target, Pencil,
+  Flame, Coffee, Sliders, ArrowRight,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MetricCard } from "@/components/MetricCard";
@@ -108,18 +109,8 @@ export default function Dashboard() {
           <MetricCard icon={TrendingUp} label="Net worth" benchmark={benchmarks.netWorth} />
         </div>
 
-        {/* Pointer to Tools */}
-        <div className="mb-12 rounded-xl border border-accent/20 bg-accent-soft/40 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-foreground">Want to model different scenarios?</p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Use the calculators in Tools to project savings, compound growth, and your Coast FIRE number.
-            </p>
-          </div>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/tools">Open Tools →</Link>
-          </Button>
-        </div>
+        {/* Personalized next-step pointer to Tools */}
+        <NextStepCard metrics={metrics} />
 
         {/* B + C grid */}
         <div className="grid lg:grid-cols-2 gap-4 mb-12">
