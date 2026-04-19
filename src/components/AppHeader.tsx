@@ -1,6 +1,7 @@
 import { TrendingUp } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/components/UserMenu";
 
 const NAV = [
   { to: "/checkup", label: "Checkup" },
@@ -22,25 +23,28 @@ export function AppHeader() {
             wealth<span className="text-accent">OS</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-0.5 text-sm overflow-x-auto -mx-2 px-2">
-          {NAV.map((item) => {
-            const active = pathname === item.to || pathname.startsWith(item.to + "/");
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={cn(
-                  "px-3 py-2 rounded-md transition-smooth whitespace-nowrap",
-                  active
-                    ? "text-foreground bg-secondary font-medium"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="flex items-center gap-3 min-w-0">
+          <nav className="flex items-center gap-0.5 text-sm overflow-x-auto -mx-2 px-2">
+            {NAV.map((item) => {
+              const active = pathname === item.to || pathname.startsWith(item.to + "/");
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
+                    "px-3 py-2 rounded-md transition-smooth whitespace-nowrap",
+                    active
+                      ? "text-foreground bg-secondary font-medium"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <UserMenu />
+        </div>
       </div>
     </header>
   );
