@@ -14,6 +14,7 @@ import {
 const NAV = [
   { to: "/checkup", label: "Checkup" },
   { to: "/dashboard", label: "Dashboard" },
+  { to: "/history", label: "History" },
   { to: "/tools", label: "Tools" },
   { to: "/learn", label: "Learn" },
 ];
