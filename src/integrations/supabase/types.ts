@@ -38,6 +38,48 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_snapshots: {
+        Row: {
+          cash_savings: number
+          created_at: string
+          health_score: number
+          id: string
+          inputs: Json
+          monthly_take_home: number
+          net_worth: number
+          savings_rate: number
+          total_debt: number
+          total_investments: number
+          user_id: string
+        }
+        Insert: {
+          cash_savings?: number
+          created_at?: string
+          health_score?: number
+          id?: string
+          inputs: Json
+          monthly_take_home?: number
+          net_worth?: number
+          savings_rate?: number
+          total_debt?: number
+          total_investments?: number
+          user_id: string
+        }
+        Update: {
+          cash_savings?: number
+          created_at?: string
+          health_score?: number
+          id?: string
+          inputs?: Json
+          monthly_take_home?: number
+          net_worth?: number
+          savings_rate?: number
+          total_debt?: number
+          total_investments?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
