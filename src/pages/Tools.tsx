@@ -9,7 +9,7 @@ import { CoastFireCalculator } from "@/components/CoastFireCalculator";
 const TABS = [
   { value: "savings", label: "Savings scale", icon: Sliders, desc: "How much faster you'd hit a 3-month emergency fund." },
   { value: "compound", label: "Compound interest", icon: LineChart, desc: "Project the long-term growth of your investments." },
-  { value: "coast-fire", label: "Coast FIRE", icon: Flame, desc: "When can you stop saving — and when can you retire?" },
+  { value: "coast-fire", label: "Coast FIRE", icon: Flame, desc: "Coast FIRE is the moment your investments can grow to fund retirement on their own — even if you never save another dollar. See when you'll hit it and the earliest you could retire." },
 ] as const;
 
 export default function Tools() {

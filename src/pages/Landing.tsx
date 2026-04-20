@@ -5,10 +5,10 @@ import { AppHeader } from "@/components/AppHeader";
 import { BenchmarkBadge } from "@/components/BenchmarkBadge";
 
 const previewMetrics = [
-  { label: "Years to freedom", value: "11.4", tone: "success" as const, badge: "On track" },
   { label: "Savings rate", value: "22%", tone: "success" as const, badge: "Strong" },
-  { label: "Coast FIRE age", value: "38", tone: "success" as const, badge: "Ahead" },
-  { label: "Net worth", value: "$148k", tone: "success" as const, badge: "Growing" },
+  { label: "Monthly surplus", value: "$1,840", tone: "success" as const, badge: "Healthy" },
+  { label: "Emergency fund", value: "5.2 mo", tone: "success" as const, badge: "Healthy" },
+  { label: "Net worth", value: "$148,200", tone: "success" as const, badge: "Growing" },
 ];
 
 const features = [
