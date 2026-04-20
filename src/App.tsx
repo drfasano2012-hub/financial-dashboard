@@ -10,6 +10,7 @@ import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import History from "./pages/History.tsx";
 import Tools from "./pages/Tools.tsx";
 import Learn from "./pages/Learn.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -40,6 +41,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
+                  <History />
                 </ProtectedRoute>
               }
             />
