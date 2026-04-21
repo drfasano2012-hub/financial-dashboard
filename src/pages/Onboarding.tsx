@@ -16,6 +16,7 @@ const TOTAL_STEPS = 5;
 const uid = () => Math.random().toString(36).slice(2, 9);
 
 const SAMPLE: FinancialInputs = {
+  currentAge: 32,
   annualIncome: 75000,
   monthlyTakeHome: 4800,
   monthlySpending: 3900,
@@ -40,6 +41,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FinancialInputs>(
     existing ?? {
+      currentAge: undefined,
       annualIncome: 0,
       monthlyTakeHome: 0,
       monthlySpending: 0,
@@ -148,10 +150,29 @@ function StepIncome({ data, update }: StepProps) {
   return (
     <div>
       <StepHeading
-        eyebrow="Step 1 · Income"
-        title="What lands in your account?"
-        subtitle="Lead with take-home — that's the money that actually drives your savings rate. Annual gross is optional context."
+        eyebrow="Step 1 · You & income"
+        title="Tell us about you and what lands in your account"
+        subtitle="Your age helps us project when you could reach financial freedom. Take-home drives your savings rate."
       />
+      <div className="mb-5 max-w-xs">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Your current age</Label>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={16}
+            max={100}
+            value={data.currentAge ?? ""}
+            onChange={(e) => {
+              const n = Number(e.target.value);
+              update("currentAge", Number.isFinite(n) && n > 0 ? n : undefined);
+            }}
+            placeholder="e.g. 32"
+            className="h-11"
+          />
+          <p className="text-xs text-muted-foreground">Used to estimate your projected freedom age</p>
+        </div>
+      </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <NumberField
           label="Monthly take-home pay"
