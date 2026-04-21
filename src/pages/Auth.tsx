@@ -76,8 +76,10 @@ export default function Auth() {
 
   const handleGoogle = async () => {
     setSubmitting(true);
+    // Always come back to /auth — the routing decision (checkup vs dashboard)
+    // is made above once we know whether the user already has data.
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${from}`,
+      redirect_uri: `${window.location.origin}/auth`,
     });
     if (result?.error) {
       setSubmitting(false);
