@@ -514,3 +514,84 @@ function NextStepCard({ metrics }: { metrics: Metrics }) {
     </Link>
   );
 }
+
+function FreedomCard({ retirement }: { retirement: RetirementProjection }) {
+  const { retirementAge, yearsToFreedom, freedomNumber, status, assumedAge, capped } = retirement;
+
+  const toneByStatus = {
+    on_track: { dot: "bg-success", label: "On track", labelClass: "bg-success-soft text-success border-success/20" },
+    tight: { dot: "bg-warning", label: "Getting there", labelClass: "bg-warning-soft text-warning border-warning/20" },
+    needs_work: { dot: "bg-destructive", label: "Needs work", labelClass: "bg-destructive-soft text-destructive border-destructive/20" },
+    no_surplus: { dot: "bg-destructive", label: "Stuck", labelClass: "bg-destructive-soft text-destructive border-destructive/20" },
+  } as const;
+  const tone = toneByStatus[status];
+
+  const headlineAge =
+    retirementAge === null
+      ? capped ? "50+ yrs" : "Not yet"
+      : `Age ${Math.round(retirementAge)}`;
+
+  const subtitle =
+    retirementAge === null
+      ? status === "no_surplus"
+        ? "You're spending everything you earn. Free up a monthly surplus to start building a path to freedom."
+        : "At your current pace, freedom is more than 50 years out. Boost your monthly investing to bring it closer."
+      : yearsToFreedom !== null && yearsToFreedom < 0.5
+      ? "You've already hit your freedom number — congrats."
+      : `That's about ${yearsToFreedom!.toFixed(1)} years from today. Keep going — every extra dollar saved pulls this in.`;
+
+  return (
+    <div className="rounded-2xl border border-border bg-gradient-card p-6 md:p-8 shadow-sm-soft">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="rounded-md bg-accent text-accent-foreground p-1.5">
+              <Plane className="h-3.5 w-3.5" />
+            </div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent">
+              Projected freedom age
+            </p>
+            <span className={cn("hidden sm:inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider", tone.labelClass)}>
+              <span className={cn("h-1.5 w-1.5 rounded-full", tone.dot)} />
+              {tone.label}
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight tabular-nums">
+            {headlineAge}
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground max-w-xl leading-relaxed">
+            {subtitle}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 md:min-w-[260px]">
+          <div className="rounded-lg border border-border bg-secondary/50 p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Years to freedom
+            </p>
+            <p className="text-xl font-bold text-foreground tabular-nums mt-1">
+              {yearsToFreedom === null ? "—" : yearsToFreedom < 0.5 ? "0" : yearsToFreedom.toFixed(1)}
+            </p>
+          </div>
+          <div className="rounded-lg border border-border bg-secondary/50 p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Your freedom number
+            </p>
+            <p className="text-xl font-bold text-foreground tabular-nums mt-1">
+              {formatCurrency(freedomNumber)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-5 text-[11px] text-muted-foreground leading-relaxed">
+        Estimate assumes age {assumedAge}, 7% real return, 4% safe withdrawal rate, and that you keep
+        investing your current monthly surplus. Use the{" "}
+        <Link to="/tools?tab=coast-fire" className="underline underline-offset-2 hover:text-foreground">
+          Coast FIRE tool
+        </Link>{" "}
+        to refine with your real age and return assumptions.
+      </p>
+    </div>
+  );
+}
