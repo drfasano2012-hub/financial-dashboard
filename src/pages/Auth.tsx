@@ -77,7 +77,7 @@ export default function Auth() {
               <TrendingUp className="h-4 w-4" />
             </div>
             <span className="text-base tracking-tight">
-              wealth<span className="text-accent">OS</span>
+              Freedom<span className="text-accent">ly</span>
             </span>
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default function Auth() {
                 Sign in · No passwords, ever
               </p>
               <h1 className="text-3xl font-bold text-foreground tracking-tight">
-                Welcome to wealth<span className="text-accent">OS</span>
+                Welcome to Freedom<span className="text-accent">ly</span>
               </h1>
               <p className="mt-2 text-muted-foreground">
                 Sign in or create an account in seconds. We'll save your checkup so it follows you across devices.

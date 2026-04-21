@@ -33,7 +33,7 @@ export function AppHeader() {
             <TrendingUp className="h-4 w-4" />
           </div>
           <span className="text-base tracking-tight whitespace-nowrap">
-            wealth<span className="text-accent">OS</span>
+            Freedom<span className="text-accent">ly</span>
           </span>
         </Link>
 
@@ -74,7 +74,7 @@ export function AppHeader() {
             <SheetContent side="right" className="w-72">
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  wealth<span className="text-accent">OS</span>
+                  Freedom<span className="text-accent">ly</span>
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-6 flex flex-col gap-1">
