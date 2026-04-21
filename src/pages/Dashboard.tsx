@@ -99,8 +99,13 @@ export default function Dashboard() {
         </div>
 
         {/* Overall health score */}
-        <div className="mb-10 animate-fade-in">
+        <div className="mb-6 animate-fade-in">
           <HealthScoreCard score={healthScore} />
+        </div>
+
+        {/* Projected freedom / retirement age */}
+        <div className="mb-10 animate-fade-in">
+          <FreedomCard retirement={retirement} />
         </div>
 
         {/* A. Snapshot — 4 cards */}
