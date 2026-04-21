@@ -123,7 +123,7 @@ export default function Landing() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        wealthOS · Educational tool, not financial advice.
+        Freedomly · Educational tool, not financial advice.
       </footer>
     </div>
   );
