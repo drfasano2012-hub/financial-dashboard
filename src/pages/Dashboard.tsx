@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   TrendingUp, Wallet, Shield, CreditCard, PiggyBank, LineChart,
   ArrowUpRight, ArrowDownRight, RotateCcw, CheckCircle2, AlertCircle, Target, Pencil,
-  Flame, Coffee, Sliders, ArrowRight,
+  Flame, Coffee, Sliders, ArrowRight, Plane,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { MetricCard } from "@/components/MetricCard";
@@ -24,6 +24,7 @@ import {
 } from "@/lib/benchmarks";
 import { calculateHealthScore } from "@/lib/healthScore";
 import { generateRecommendations } from "@/lib/recommendations";
+import { projectRetirement, type RetirementProjection } from "@/lib/retirementProjection";
 import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
@@ -46,12 +47,13 @@ export default function Dashboard() {
         investing: investingReadinessBenchmark(metrics),
       },
       recommendations: generateRecommendations(inputs, metrics),
+      retirement: projectRetirement(inputs, metrics),
     };
   }, [inputs]);
 
   if (!inputs || !result) return <Navigate to="/checkup" replace />;
 
-  const { metrics, benchmarks, recommendations, healthScore } = result;
+  const { metrics, benchmarks, recommendations, healthScore, retirement } = result;
   const spendingPct = inputs.monthlyTakeHome > 0 ? (inputs.monthlySpending / inputs.monthlyTakeHome) * 100 : 0;
 
   const handleReset = () => {
@@ -66,7 +68,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 animate-fade-in">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">Your wealthOS</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">Your Freedomly</p>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Dashboard</h1>
             <p className="mt-2 text-muted-foreground">A clear view of where you are — and what to do next.</p>
           </div>

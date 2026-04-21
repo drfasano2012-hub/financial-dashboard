@@ -42,10 +42,15 @@ export default function Auth() {
     e.preventDefault();
     if (!email) return;
     setSubmitting(true);
+    // Always send users back to /auth on the current (https) origin.
+    // The AuthProvider's onAuthStateChange will pick up the session
+    // and ProtectedRoute / the redirect below will forward them on.
+    const origin = window.location.origin.replace(/^http:\/\//, "https://");
+    const redirectTo = `${origin}/auth`;
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}${from}`,
+        emailRedirectTo: redirectTo,
       },
     });
     setSubmitting(false);
