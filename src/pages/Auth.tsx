@@ -114,18 +114,41 @@ export default function Auth() {
                 Check your inbox
               </h1>
               <p className="text-muted-foreground mb-6">
-                We sent a magic sign-in link to <span className="font-medium text-foreground">{email}</span>.
-                Click it to continue — no password needed.
+                We sent a sign-in link to{" "}
+                <span className="font-medium text-foreground">{email}</span>.
+                Open the email and tap <span className="font-medium text-foreground">“Confirm your mail”</span> to continue.
               </p>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setEmailSent(false);
-                  setEmail("");
-                }}
-              >
-                Use a different email
-              </Button>
+
+              <div className="rounded-lg border border-border bg-muted/40 p-4 text-left text-sm text-muted-foreground space-y-2 mb-6">
+                <p className="font-medium text-foreground">Don't see a button in the email?</p>
+                <p>
+                  Some mobile email apps hide buttons. Look for a long link in the message body that starts with
+                  {" "}<span className="font-mono text-foreground">https://</span> and tap it — it works exactly the same.
+                </p>
+                <p>
+                  Still nothing? Check your spam folder, or resend below.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setEmailSent(false);
+                  }}
+                >
+                  Resend link
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setEmailSent(false);
+                    setEmail("");
+                  }}
+                >
+                  Use a different email
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="rounded-2xl border border-border bg-gradient-card p-8 md:p-10 shadow-md-soft animate-fade-in">
