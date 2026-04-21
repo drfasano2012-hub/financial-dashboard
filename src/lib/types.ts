@@ -14,6 +14,8 @@ export interface Goal {
 }
 
 export interface FinancialInputs {
+  /** User's current age — used to project freedom/retirement age */
+  currentAge?: number;
   annualIncome: number;
   monthlyTakeHome: number;
   monthlySpending: number;

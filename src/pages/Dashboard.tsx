@@ -47,7 +47,7 @@ export default function Dashboard() {
         investing: investingReadinessBenchmark(metrics),
       },
       recommendations: generateRecommendations(inputs, metrics),
-      retirement: projectRetirement(inputs, metrics),
+      retirement: projectRetirement(inputs, metrics, inputs.currentAge),
     };
   }, [inputs]);
 
@@ -585,12 +585,16 @@ function FreedomCard({ retirement }: { retirement: RetirementProjection }) {
       </div>
 
       <p className="mt-5 text-[11px] text-muted-foreground leading-relaxed">
-        Estimate assumes age {assumedAge}, 7% real return, 4% safe withdrawal rate, and that you keep
-        investing your current monthly surplus. Use the{" "}
+        Based on your current age of {assumedAge}, a 7% real return, a 4% safe withdrawal rate, and you
+        continuing to invest your current monthly surplus.{" "}
+        <Link to="/checkup" className="underline underline-offset-2 hover:text-foreground">
+          Update your age
+        </Link>{" "}
+        or refine assumptions in the{" "}
         <Link to="/tools?tab=coast-fire" className="underline underline-offset-2 hover:text-foreground">
           Coast FIRE tool
-        </Link>{" "}
-        to refine with your real age and return assumptions.
+        </Link>
+        .
       </p>
     </div>
   );
