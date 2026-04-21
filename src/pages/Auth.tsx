@@ -7,12 +7,15 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/contexts/AuthContext";
+import { useFinancialStore } from "@/store/financialStore";
 import { toast } from "sonner";
 
 export default function Auth() {
   const { user, loading } = useAuth();
   const location = useLocation();
-  const from = (location.state as { from?: string } | null)?.from ?? "/dashboard";
+  const explicitFrom = (location.state as { from?: string } | null)?.from;
+  const inputs = useFinancialStore((s) => s.inputs);
+  const hydrated = useFinancialStore((s) => s.hydrated);
 
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -28,15 +31,25 @@ export default function Auth() {
     }
   }, []);
 
-  if (loading) {
+  // While auth is initializing, OR while we're signed in but the financial
+  // store hasn't finished loading the user's checkup from the cloud, show a
+  // gentle loading state. This prevents new users from being bounced to the
+  // dashboard before we know whether they have data yet.
+  if (loading || (user && !hydrated)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">Loading…</div>
+        <div className="text-sm text-muted-foreground">Signing you in…</div>
       </div>
     );
   }
 
-  if (user) return <Navigate to={from} replace />;
+  if (user) {
+    // Send brand-new users into the checkup flow; returning users go straight
+    // to their dashboard. An explicit `from` (e.g. they tried to access a
+    // protected page before signing in) always wins.
+    const target = explicitFrom ?? (inputs ? "/dashboard" : "/checkup");
+    return <Navigate to={target} replace />;
+  }
 
   const handleMagicLink = async (e: FormEvent) => {
     e.preventDefault();
@@ -63,8 +76,10 @@ export default function Auth() {
 
   const handleGoogle = async () => {
     setSubmitting(true);
+    // Always come back to /auth — the routing decision (checkup vs dashboard)
+    // is made above once we know whether the user already has data.
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${from}`,
+      redirect_uri: `${window.location.origin}/auth`,
     });
     if (result?.error) {
       setSubmitting(false);
