@@ -2,7 +2,6 @@ import { Menu, TrendingUp } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { UserMenu } from "@/components/UserMenu";
 import {
   Sheet,
   SheetContent,
@@ -55,12 +54,10 @@ export function AppHeader() {
               </Link>
             ))}
           </nav>
-          <UserMenu />
         </div>
 
         {/* Mobile nav */}
         <div className="flex md:hidden items-center gap-2">
-          <UserMenu />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
