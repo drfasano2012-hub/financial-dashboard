@@ -14,6 +14,10 @@ import History from "./pages/History.tsx";
 import Tools from "./pages/Tools.tsx";
 import Learn from "./pages/Learn.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import LifeEngineOnboarding from "./pages/LifeEngineOnboarding.tsx";
+import LifeEngineDashboard from "./pages/LifeEngineDashboard.tsx";
+import LifeEngineSimulate from "./pages/LifeEngineSimulate.tsx";
+import LifeEngineResults from "./pages/LifeEngineResults.tsx";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +58,10 @@ const App = () => (
             />
             <Route path="/tools" element={<Tools />} />
             <Route path="/learn" element={<Learn />} />
+            <Route path="/life-engine" element={<LifeEngineOnboarding />} />
+            <Route path="/life-engine/dashboard" element={<LifeEngineDashboard />} />
+            <Route path="/life-engine/simulate" element={<LifeEngineSimulate />} />
+            <Route path="/life-engine/results" element={<LifeEngineResults />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
