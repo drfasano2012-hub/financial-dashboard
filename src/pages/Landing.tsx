@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Sparkles, TrendingUp, Compass, Plane, Clock } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles, TrendingUp, Compass, Plane, Clock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppHeader } from "@/components/AppHeader";
 import { BenchmarkBadge } from "@/components/BenchmarkBadge";
@@ -110,15 +110,30 @@ export default function Landing() {
           ))}
         </div>
 
-        <div className="mt-20 rounded-2xl bg-gradient-hero p-10 md:p-14 text-center text-primary-foreground shadow-lg-soft">
-          <TrendingUp className="h-8 w-8 mx-auto mb-4 text-accent" />
-          <h3 className="text-2xl md:text-3xl font-bold tracking-tight">How many years until you're free?</h3>
-          <p className="mt-3 text-primary-foreground/70 max-w-md mx-auto">Find out in under 5 minutes. No sign-up required.</p>
-          <Button asChild size="lg" variant="hero" className="mt-6">
-            <Link to="/checkup">
-              Map your path to freedom <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          </Button>
+        {/* Life Engine callout */}
+        <div className="mt-12 grid md:grid-cols-2 gap-4">
+          <div className="rounded-2xl bg-gradient-hero p-8 text-center text-primary-foreground shadow-lg-soft">
+            <TrendingUp className="h-8 w-8 mx-auto mb-4 text-accent" />
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight">How many years until you're free?</h3>
+            <p className="mt-2 text-primary-foreground/70 text-sm max-w-xs mx-auto">Find out in under 5 minutes. No sign-up required.</p>
+            <Button asChild size="lg" variant="hero" className="mt-5">
+              <Link to="/checkup">
+                Map your path <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="rounded-2xl bg-gradient-card border border-accent/20 p-8 text-center shadow-lg-soft">
+            <Zap className="h-8 w-8 mx-auto mb-4 text-accent" />
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">What if you bought a home? Changed jobs?</h3>
+            <p className="mt-2 text-muted-foreground text-sm max-w-xs mx-auto">
+              Life Engine simulates major decisions and shows their real impact on your freedom timeline.
+            </p>
+            <Button asChild size="lg" variant="accent" className="mt-5">
+              <Link to="/life-engine">
+                Simulate a decision <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
